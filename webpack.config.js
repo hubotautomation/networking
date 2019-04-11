@@ -3,7 +3,7 @@
 const webpack = require('webpack')
 const UglifyJsPlugin = webpack.optimize.UglifyJsPlugin
 const path = require('path')
-const env = require('yargs').argv.env // use --env with webpack 2
+const env = require('yargs').argv.env
 
 let libraryName = 'Hubot'
 
@@ -50,7 +50,7 @@ const config = {
             commonjs: 'lodash',
             commonjs2: 'lodash',
             amd: '_',
-            root: '_'            
+            root: '_'
         },
         WebSocket: {
             WebSocket: 'WebSocket'
