@@ -10,7 +10,7 @@
     "test:watch": "mocha --compilers js:babel-core/register --colors -w ./test/*.spec.js"
   },
   "devDependencies": {
-    "babel-cli": "6.24.1",
+    "babel-cli": "^6.26.0",
     "babel-core": "6.24.1",
     "babel-eslint": "7.2.3",
     "babel-loader": "7.0.0",
@@ -20,9 +20,9 @@
     "chai-as-promised": "^7.1.1",
     "eslint": "3.19.0",
     "eslint-loader": "1.7.1",
-    "mocha": "3.3.0",
-    "sinon": "^4.1.2",
-    "universal-websocket-client": "^1.0.1",
+    "mocha": "^6.1.2",
+    "sinon": "^4.5.0",
+    "universal-websocket-client": "^1.0.2",
     "webpack": "3.1.0",
     "yargs": "7.1.0"
   },
@@ -37,10 +37,10 @@
   "author": "André Abadesso",
   "license": "Absolutely Proprietary",
   "dependencies": {
-    "bluebird": "^3.5.1",
+    "bluebird": "^3.5.4",
     "isomorphic-fetch": "^2.2.1",
-    "lodash": "^4.17.4",
-    "moment": "^2.19.1",
-    "ws": "^3.3.1"
+    "lodash": "^4.17.11",
+    "moment": "^2.24.0",
+    "ws": "^3.3.3"
   }
 }
