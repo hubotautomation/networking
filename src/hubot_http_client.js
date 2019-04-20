@@ -56,7 +56,7 @@ export default class HubotHttpClient {
     }
 
     static createUser(email, password, cpf, name) {
-        return fetch(`http://cloud.hubot.com.br/users`, {
+        return fetch('http://cloud.hubot.com.br/users', {
             method: 'POST',
             body: JSON.stringify({
                 name,
