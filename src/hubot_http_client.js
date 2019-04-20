@@ -30,7 +30,7 @@ export default class HubotHttpClient {
     /* Authenticates the user on the cloud backend.
      */
     auth() {
-        return fetch(`http://${this.server}/users/auth`, {
+        return fetch(`http://${this.authServer}/users/auth`, {
             method: 'POST',
             body: JSON.stringify({
                 email: this.authData.email,
