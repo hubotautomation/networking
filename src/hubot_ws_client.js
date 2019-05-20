@@ -13,6 +13,7 @@ export default class HubotWsClient {
     constructor(WebSocket, options) {
         this.Ws = WebSocket
         this.server = options.server
+        this.protocol = options.protocol || 'ws'
         this.port = options.port || 80
         this.path = options.path || ''
         this.authenticated = false
@@ -176,8 +177,8 @@ export default class HubotWsClient {
 
         return new Promise((resolve, reject) => {
             try {
-                console.log(`Connecting to ws://${this.server}:${this.port}${this.path}`)
-                this.socket = new this.Ws(`ws://${this.server}:${this.port}${this.path}`)
+                console.log(`Connecting to ${this.protocol}://${this.server}:${this.port}${this.path}`)
+                this.socket = new this.Ws(`${this.protocol}://${this.server}:${this.port}${this.path}`)
 
                 this.success = resolve
                 this.fail = reject

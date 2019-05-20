@@ -14,6 +14,7 @@ export default class HubotHttpClient {
     constructor(options, data) {
         this.authData = options.authData
         this.server = options.server
+        this.protocol = options.protocol || 'http'
         this.authServer = options.authServer
         this.local = false
 
@@ -30,7 +31,7 @@ export default class HubotHttpClient {
     /* Authenticates the user on the cloud backend.
      */
     auth() {
-        return fetch(`http://${this.authServer}/users/auth`, {
+        return fetch(`${this.protocol}://${this.authServer}/users/auth`, {
             method: 'POST',
             body: JSON.stringify({
                 email: this.authData.email,
@@ -123,7 +124,7 @@ export default class HubotHttpClient {
         let headers = this.getHeaders(centralId)
         let payload = HubotAmbient.newAmbient(slaves, name)
 
-        return fetch(`http://${this.server}/ambients/${id}`, {
+        return fetch(`${this.protocol}://${this.server}/ambients/${id}`, {
             method: 'PUT',
             headers: headers,
             body: JSON.stringify(payload)
@@ -139,7 +140,7 @@ export default class HubotHttpClient {
         let payload = HubotAmbient.newAmbient(slaves, name)
         let headers = this.getHeaders(centralId)
 
-        return fetch(`http://${this.server}/ambients`, {
+        return fetch(`${this.protocol}://${this.server}/ambients`, {
             method: 'POST',
             body: JSON.stringify(payload),
             headers: headers
@@ -151,7 +152,7 @@ export default class HubotHttpClient {
     }
 
     registerCentral(ip) {
-        return fetch(`http://${ip}/auth/register`, {
+        return fetch(`${this.protocol}://${ip}/auth/register`, {
             method: 'GET'
         })
         .then((res) => res.json())
@@ -161,7 +162,7 @@ export default class HubotHttpClient {
     }
 
     cloudRegister(signature, centralId, name) {
-        return fetch(`http://${this.authServer}/central/register`, {
+        return fetch(`${this.protocol}://${this.authServer}/central/register`, {
             method: 'POST',
             body: JSON.stringify({
                 serial: centralId,
@@ -180,7 +181,7 @@ export default class HubotHttpClient {
     }
 
     getCentrals() {
-        return fetch(`http://${this.server}/users/centrals`, {
+        return fetch(`${this.protocol}://${this.server}/users/centrals`, {
             method: 'GET',
             headers: {
                 'Content-Type': 'application/json',
@@ -200,7 +201,7 @@ export default class HubotHttpClient {
 
         return new Promise((resolve, reject) => {
             console.log('Fetching...')
-            fetch(`http://${this.server}/schedules`, {
+            fetch(`${this.protocol}://${this.server}/schedules`, {
                 method: 'GET',
                 headers: headers,
                 timeout: HTTP_TIMEOUT
@@ -219,7 +220,7 @@ export default class HubotHttpClient {
     createSchedule(centralId, schedule) {
         let headers = this.getHeaders(centralId)
 
-        return fetch(`http://${this.server}/schedules`, {
+        return fetch(`${this.protocol}://${this.server}/schedules`, {
             method: 'POST',
             body: JSON.stringify({
                 action: schedule.action,
@@ -238,7 +239,7 @@ export default class HubotHttpClient {
     createUseHoursAlert(centralId, slaveId, alerts) {
         let headers = this.getHeaders(centralId)
 
-        return fetch(`http://${this.server}/alerts/use_hours/${slaveId}`, {
+        return fetch(`${this.protocol}://${this.server}/alerts/use_hours/${slaveId}`, {
             method: 'POST',
             body: JSON.stringify(alerts),
             headers: headers
@@ -249,7 +250,7 @@ export default class HubotHttpClient {
     getAlertsBySlaveId(centralId, type, slaveId) {
         let headers = this.getHeaders(centralId)
 
-        return fetch(`http://${this.server}/alerts/${type}/${slaveId}`, {
+        return fetch(`${this.protocol}://${this.server}/alerts/${type}/${slaveId}`, {
             method: 'GET',
             headers: headers
         })
@@ -266,7 +267,7 @@ export default class HubotHttpClient {
             active: schedule.active
         }
 
-        return fetch(`http://${this.server}/schedules/${schedule.id}`, {
+        return fetch(`${this.protocol}://${this.server}/schedules/${schedule.id}`, {
             method: 'PUT',
             headers: headers,
             body: JSON.stringify(data)
@@ -278,7 +279,7 @@ export default class HubotHttpClient {
     deleteSchedule(centralId, id) {
         let headers = this.getHeaders(centralId)
 
-        return fetch(`http://${this.server}/schedules/${id}`, {
+        return fetch(`${this.protocol}://${this.server}/schedules/${id}`, {
             method: 'DELETE',
             headers: headers
         })
@@ -289,7 +290,7 @@ export default class HubotHttpClient {
     createSlave(wsClient, centralId, slave) {
         let headers = this.getHeaders(centralId)
 
-        return fetch(`http://${this.server}/slaves`, {
+        return fetch(`${this.protocol}://${this.server}/slaves`, {
             method: 'POST',
             body: JSON.stringify({
                 slave: {
@@ -316,7 +317,7 @@ export default class HubotHttpClient {
     createScene(wsClient, centralId, scene) {
         let headers = this.getHeaders(centralId)
 
-        return fetch(`http://${this.server}/scenes`, {
+        return fetch(`${this.protocol}://${this.server}/scenes`, {
             method: 'POST',
             body: JSON.stringify({
                 name: scene.name,
@@ -334,7 +335,7 @@ export default class HubotHttpClient {
     deleteScene(wsClient, centralId, id) {
         let headers = this.getHeaders(centralId)
 
-        return fetch(`http://${this.server}/scenes/${id}`, {
+        return fetch(`${this.protocol}://${this.server}/scenes/${id}`, {
             method: 'DELETE',
             headers: headers
         })
@@ -348,7 +349,7 @@ export default class HubotHttpClient {
     deleteAmbient(wsClient, centralId, id) {
         let headers = this.getHeaders(centralId)
 
-        return fetch(`http://${this.server}/ambients/${id}`, {
+        return fetch(`${this.protocol}://${this.server}/ambients/${id}`, {
             method: 'DELETE',
             headers: headers
         })
@@ -369,7 +370,7 @@ export default class HubotHttpClient {
             json: scene.json
         }
 
-        return fetch(`http://${this.server}/scenes/${scene.id}`, {
+        return fetch(`${this.protocol}://${this.server}/scenes/${scene.id}`, {
             method: 'PUT',
             headers: headers,
             body: JSON.stringify(data)
@@ -381,7 +382,7 @@ export default class HubotHttpClient {
     createDevice(wsClient, centralId, device) {
         let headers = this.getHeaders(centralId)
 
-        return fetch(`http://${this.server}/devices`, {
+        return fetch(`${this.protocol}://${this.server}/devices`, {
             method: 'POST',
             body: JSON.stringify({
                 'type': device.type,
@@ -402,7 +403,7 @@ export default class HubotHttpClient {
     updateDevice(wsClient, centralId, device) {
         let headers = this.getHeaders(centralId)
 
-        return fetch(`http://${this.server}/devices/${device.id}`, {
+        return fetch(`${this.protocol}://${this.server}/devices/${device.id}`, {
             method: 'PUT',
             headers: headers,
             body: JSON.stringify({
@@ -423,7 +424,7 @@ export default class HubotHttpClient {
     deleteDevice(wsClient, centralId, id) {
         let headers = this.getHeaders(centralId)
 
-        return fetch(`http://${this.server}/devices/${id}`, {
+        return fetch(`${this.protocol}://${this.server}/devices/${id}`, {
             method: 'DELETE',
             headers: headers
         })
@@ -437,7 +438,7 @@ export default class HubotHttpClient {
     createChannel(wsClient, centralId, channel) {
         let headers = this.getHeaders(centralId)
 
-        return fetch(`http://${this.server}/channels`, {
+        return fetch(`${this.protocol}://${this.server}/channels`, {
             method: 'POST',
             body: JSON.stringify({
                 'type': channel.type,
@@ -458,7 +459,7 @@ export default class HubotHttpClient {
     getAmbients(wsClient, centralId) {
         let headers = this.getHeaders(centralId)
 
-        return fetch(`http://${this.server}/ambients`, {
+        return fetch(`${this.protocol}://${this.server}/ambients`, {
             method: 'GET',
             headers: headers
         })
@@ -480,7 +481,7 @@ export default class HubotHttpClient {
         let headers = this.getHeaders(centralId)
 
         return new Promise((resolve, reject) => {
-            fetch(`http://${this.server}/scenes`, {
+            fetch(`${this.protocol}://${this.server}/scenes`, {
                 method: 'GET',
                 headers: headers,
                 timeout: HTTP_TIMEOUT
@@ -510,7 +511,7 @@ export default class HubotHttpClient {
         let headers = this.getHeaders(centralId)
 
         return new Promise((resolve, reject) => {
-            fetch(`http://${this.server}/slaves`, {
+            fetch(`${this.protocol}://${this.server}/slaves`, {
                 method: 'GET',
                 headers: headers,
                 timeout: HTTP_TIMEOUT
@@ -545,7 +546,7 @@ export default class HubotHttpClient {
     getDeviceRemotes(wsClient, centralId, deviceId) {
         let headers = this.getHeaders(centralId)
 
-        return fetch(`http://${this.server}/devices/${deviceId}/remotes`, {
+        return fetch(`${this.protocol}://${this.server}/devices/${deviceId}/remotes`, {
             method: 'GET',
             headers: headers
         })
@@ -579,7 +580,7 @@ export default class HubotHttpClient {
         console.log(data)
         console.log(JSON.stringify(data))
 
-        return fetch(`http://${this.server}/slaves/${slave.id}`, {
+        return fetch(`${this.protocol}://${this.server}/slaves/${slave.id}`, {
             method: 'PUT',
             headers: headers,
             body: JSON.stringify(data)
@@ -594,7 +595,7 @@ export default class HubotHttpClient {
     updateChannel(wsClient, centralId, channel) {
         let headers = this.getHeaders(centralId)
 
-        return fetch(`http://${this.server}/channels/${channel.id}`, {
+        return fetch(`${this.protocol}://${this.server}/channels/${channel.id}`, {
             method: 'PUT',
             headers: headers,
             body: JSON.stringify({
@@ -614,7 +615,7 @@ export default class HubotHttpClient {
     deleteChannel(wsClient, centralId, id) {
         let headers = this.getHeaders(centralId)
 
-        return fetch(`http://${this.server}/channels/${id}`, {
+        return fetch(`${this.protocol}://${this.server}/channels/${id}`, {
             method: 'DELETE',
             headers: headers
         })
@@ -628,7 +629,7 @@ export default class HubotHttpClient {
     deleteSlave(wsClient, centralId, id) {
         let headers = this.getHeaders(centralId)
 
-        return fetch(`http://${this.server}/slaves/${id}`, {
+        return fetch(`${this.protocol}://${this.server}/slaves/${id}`, {
             method: 'DELETE',
             headers: headers
         })
@@ -642,7 +643,7 @@ export default class HubotHttpClient {
     deleteButton(centralId, button) {
         let headers = this.getHeaders(centralId)
 
-        return fetch(`http://${this.server}/rfir_buttons/${button.id}`, {
+        return fetch(`${this.protocol}://${this.server}/rfir_buttons/${button.id}`, {
             method: 'DELETE',
             headers: headers
         })
@@ -655,7 +656,7 @@ export default class HubotHttpClient {
     createButton(centralId, button) {
         let headers = this.getHeaders(centralId)
 
-        return fetch(`http://${this.server}/rfir_buttons`, {
+        return fetch(`${this.protocol}://${this.server}/rfir_buttons`, {
             method: 'POST',
             body: JSON.stringify({
                 name: button.name,
@@ -682,9 +683,9 @@ export default class HubotHttpClient {
         let url
 
         if (scope === 'all') {
-            url = `http://${this.server}/consumption/${scope}/${api}/${from}/${to}`
+            url = `${this.protocol}://${this.server}/consumption/${scope}/${api}/${from}/${to}`
         } else {
-            url = `http://${this.server}/consumption/${scope}/${id}/${api}/${from}/${to}`
+            url = `${this.protocol}://${this.server}/consumption/${scope}/${id}/${api}/${from}/${to}`
         }
 
         return fetch(url, {
