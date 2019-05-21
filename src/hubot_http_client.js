@@ -28,6 +28,22 @@ export default class HubotHttpClient {
         }
     }
 
+    static createUser(options, email, password, cpf, name) {
+        return fetch(`${options.protocol}://${options.authServer}/users`, {
+            method: 'POST',
+            body: JSON.stringify({
+                name,
+                email,
+                password,
+                cpf
+            }),
+            headers: {
+                'Content-Type': 'application/json'
+            }
+        })
+        .then((res) => res.json())
+    }
+
     /* Authenticates the user on the cloud backend.
      */
     auth() {
@@ -54,22 +70,6 @@ export default class HubotHttpClient {
 
             return data
         })
-    }
-
-    static createUser(email, password, cpf, name) {
-        return fetch('http://cloud.hubot.com.br/users', {
-            method: 'POST',
-            body: JSON.stringify({
-                name,
-                email,
-                password,
-                cpf
-            }),
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        })
-        .then((res) => res.json())
     }
 
     changeServer(server) {
