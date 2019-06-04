@@ -236,6 +236,17 @@ export default class HubotHttpClient {
         })
     }
 
+    createDefaultConsumptionAlert(centralId, slaveId, extra) {
+        let headers = this.getHeaders(centralId)
+
+        return fetch(`${this.protocol}://${this.server}/alerts/default_consumption/${slaveId}`, {
+            method: 'POST',
+            body: JSON.stringify(extra),
+            headers: headers
+        })
+        .then((res) => res.json())
+    }
+
     createUseHoursAlert(centralId, slaveId, alerts) {
         let headers = this.getHeaders(centralId)
 
