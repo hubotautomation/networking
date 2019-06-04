@@ -268,6 +268,17 @@ export default class HubotHttpClient {
         .then((res) => res.json())
     }
 
+    deleteAlert(centralId, id) {
+        let headers = this.getHeaders(centralId)
+
+        return fetch(`${this.protocol}://${this.server}/alerts/${id}`, {
+            method: 'DELETE',
+            headers: headers
+        })
+        .then((res) => this.checkStatus(res))
+        .then((res) => res.json())
+    }
+
     updateSchedule(centralId, schedule) {
         let headers = this.getHeaders(centralId)
 
