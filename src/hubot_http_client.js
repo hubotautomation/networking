@@ -152,7 +152,7 @@ export default class HubotHttpClient {
     }
 
     registerCentral(ip) {
-        return fetch(`${this.protocol}://${ip}/auth/register`, {
+        return fetch(`http://${ip}/auth/register`, {
             method: 'GET'
         })
         .then((res) => res.json())
@@ -173,6 +173,54 @@ export default class HubotHttpClient {
                 'Content-Type': 'application/json',
                 'x-access-token': this.token
             }
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            return data
+        })
+    }
+
+    getCentralUsers(centralId) {
+        return fetch(`${this.protocol}:/central/${centralId}/users`, {
+            method: 'GET'
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            return data
+        })
+    }
+
+    getUserPermissions(centralId, userId) {
+        let headers = this.getHeaders(centralId)
+
+        return new Promise((resolve, reject) => {
+            fetch(`${this.protocol}://${this.server}/ambient_permissions/user/${userId}`, {
+                method: 'GET',
+                headers: headers,
+                timeout: HTTP_TIMEOUT
+            })
+            .then((res) => this.checkStatus(res))
+            .then((res) => res.json())
+            .then((data) => resolve(data))
+            .catch((err) => reject(err))
+
+            setTimeout(() => {
+                reject(new RequestTimeout())
+            }, HTTP_TIMEOUT)
+        })
+    }
+
+    createAmbientPermission(centralId, expires, user, ambients) {
+        let headers = this.getHeaders(centralId)
+
+        return fetch(`${this.protocol}://${this.server}/ambient_permissions`, {
+            method: 'POST',
+            body: JSON.stringify({
+                ambients,
+                expires,
+                userId: user
+            }),
+            headers: headers
         })
         .then((res) => res.json())
         .then((data) => {
