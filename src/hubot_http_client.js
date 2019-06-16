@@ -443,7 +443,8 @@ export default class HubotHttpClient {
             name: scene.name,
             description: scene.description,
             color: scene.color,
-            json: scene.json
+            json: scene.json,
+            ambientId: scene.ambientId
         }
 
         return fetch(`${this.protocol}://${this.server}/scenes/${scene.id}`, {
