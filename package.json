@@ -1,6 +1,6 @@
 {
   "name": "hubot-networking",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "description": "All networking needed by hubot clients.",
   "main": "lib/Hubot.js",
   "scripts": {

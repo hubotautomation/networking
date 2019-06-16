@@ -181,7 +181,7 @@ export default class HubotHttpClient {
     }
 
     getCentralUsers(centralId) {
-        return fetch(`${this.protocol}:/central/${centralId}/users`, {
+        return fetch(`${this.protocol}://${this.authServer}/central/${centralId}/users`, {
             method: 'GET'
         })
         .then((res) => res.json())
