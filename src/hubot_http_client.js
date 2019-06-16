@@ -41,11 +41,11 @@ export default class HubotHttpClient {
                 'Content-Type': 'application/json'
             }
         })
-        .then((res) => res.json())
+            .then((res) => res.json())
     }
 
     /* Authenticates the user on the cloud backend.
-     */
+    */
     auth() {
         return fetch(`${this.protocol}://${this.authServer}/users/auth`, {
             method: 'POST',
@@ -57,19 +57,19 @@ export default class HubotHttpClient {
                 'Content-Type': 'application/json'
             }
         })
-        .then((res) => res.json())
-        .then((data) => {
-            this.token = data.token
-            this.user = data.user
-            this.centrals = {}
+            .then((res) => res.json())
+            .then((data) => {
+                this.token = data.token
+                this.user = data.user
+                this.centrals = {}
 
-            data.user.centrals.forEach((central) => {
-                this.centrals[central['central_id']] = central
+                data.user.centrals.forEach((central) => {
+                    this.centrals[central['central_id']] = central
+                })
+                console.log(this.centrals)
+
+                return data
             })
-            console.log(this.centrals)
-
-            return data
-        })
     }
 
     changeServer(server) {
@@ -81,7 +81,7 @@ export default class HubotHttpClient {
     }
 
     /* Generic status handler for routes.
-     */
+    */
     checkStatus(res) {
         if (res.status === 404) {
             console.log('STATUS IS 404')
@@ -129,11 +129,11 @@ export default class HubotHttpClient {
             headers: headers,
             body: JSON.stringify(payload)
         })
-        .then((res) => this.checkStatus(res))
-        .then((res) => res.json())
-        .then((slave) => {
-            return slave
-        })
+            .then((res) => this.checkStatus(res))
+            .then((res) => res.json())
+            .then((slave) => {
+                return slave
+            })
     }
 
     createAmbient(wsClient, centralId, slaves, name) {
@@ -145,20 +145,20 @@ export default class HubotHttpClient {
             body: JSON.stringify(payload),
             headers: headers
         })
-        .then((res) => res.json())
-        .then((data) => {
-            return data
-        })
+            .then((res) => res.json())
+            .then((data) => {
+                return data
+            })
     }
 
     registerCentral(ip) {
         return fetch(`http://${ip}/auth/register`, {
             method: 'GET'
         })
-        .then((res) => res.json())
-        .then((data) => {
-            return data
-        })
+            .then((res) => res.json())
+            .then((data) => {
+                return data
+            })
     }
 
     cloudRegister(signature, centralId, name) {
@@ -174,10 +174,10 @@ export default class HubotHttpClient {
                 'x-access-token': this.token
             }
         })
-        .then((res) => res.json())
-        .then((data) => {
-            return data
-        })
+            .then((res) => res.json())
+            .then((data) => {
+                return data
+            })
     }
 
     getCentralUsers(centralId) {
@@ -188,11 +188,11 @@ export default class HubotHttpClient {
             headers: headers,
             timeout: HTTP_TIMEOUT
         })
-        .then((res) => this.checkStatus(res))
-        .then((res) => res.json())
-        .then((data) => {
-            return data
-        })
+            .then((res) => this.checkStatus(res))
+            .then((res) => res.json())
+            .then((data) => {
+                return data
+            })
     }
 
     getUserPermissions(centralId, userId) {
@@ -204,10 +204,10 @@ export default class HubotHttpClient {
                 headers: headers,
                 timeout: HTTP_TIMEOUT
             })
-            .then((res) => this.checkStatus(res))
-            .then((res) => res.json())
-            .then((data) => resolve(data))
-            .catch((err) => reject(err))
+                .then((res) => this.checkStatus(res))
+                .then((res) => res.json())
+                .then((data) => resolve(data))
+                .catch((err) => reject(err))
 
             setTimeout(() => {
                 reject(new RequestTimeout())
@@ -227,10 +227,10 @@ export default class HubotHttpClient {
             }),
             headers: headers
         })
-        .then((res) => res.json())
-        .then((data) => {
-            return data
-        })
+            .then((res) => res.json())
+            .then((data) => {
+                return data
+            })
     }
 
     getCentrals() {
@@ -241,11 +241,11 @@ export default class HubotHttpClient {
                 'x-access-token': this.token
             }
         })
-        .then((res) => res.json())
-        .then((data) => {
-            this.centrals = data.centrals
-            return data
-        })
+            .then((res) => res.json())
+            .then((data) => {
+                this.centrals = data.centrals
+                return data
+            })
     }
 
     // Schedule
@@ -259,10 +259,10 @@ export default class HubotHttpClient {
                 headers: headers,
                 timeout: HTTP_TIMEOUT
             })
-            .then((res) => this.checkStatus(res))
-            .then((res) => res.json())
-            .then((data) => resolve(data))
-            .catch((err) => reject(err))
+                .then((res) => this.checkStatus(res))
+                .then((res) => res.json())
+                .then((data) => resolve(data))
+                .catch((err) => reject(err))
 
             setTimeout(() => {
                 reject(new RequestTimeout())
@@ -283,10 +283,10 @@ export default class HubotHttpClient {
             }),
             headers: headers
         })
-        .then((res) => res.json())
-        .then((data) => {
-            return data
-        })
+            .then((res) => res.json())
+            .then((data) => {
+                return data
+            })
     }
 
     createDefaultConsumptionAlert(centralId, slaveId, extra) {
@@ -297,7 +297,7 @@ export default class HubotHttpClient {
             body: JSON.stringify(extra),
             headers: headers
         })
-        .then((res) => res.json())
+            .then((res) => res.json())
     }
 
     createUseHoursAlert(centralId, slaveId, alerts) {
@@ -308,7 +308,7 @@ export default class HubotHttpClient {
             body: JSON.stringify(alerts),
             headers: headers
         })
-        .then((res) => res.json())
+            .then((res) => res.json())
     }
 
     getAlertsBySlaveId(centralId, type, slaveId) {
@@ -318,7 +318,7 @@ export default class HubotHttpClient {
             method: 'GET',
             headers: headers
         })
-        .then((res) => res.json())
+            .then((res) => res.json())
     }
 
     deleteAlert(centralId, id) {
@@ -328,8 +328,8 @@ export default class HubotHttpClient {
             method: 'DELETE',
             headers: headers
         })
-        .then((res) => this.checkStatus(res))
-        .then((res) => res.json())
+            .then((res) => this.checkStatus(res))
+            .then((res) => res.json())
     }
 
     updateSchedule(centralId, schedule) {
@@ -347,8 +347,8 @@ export default class HubotHttpClient {
             headers: headers,
             body: JSON.stringify(data)
         })
-        .then((res) => this.checkStatus(res))
-        .then((res) => res.json())
+            .then((res) => this.checkStatus(res))
+            .then((res) => res.json())
     }
 
     deleteSchedule(centralId, id) {
@@ -358,8 +358,8 @@ export default class HubotHttpClient {
             method: 'DELETE',
             headers: headers
         })
-        .then((res) => this.checkStatus(res))
-        .then((res) => res.json())
+            .then((res) => this.checkStatus(res))
+            .then((res) => res.json())
     }
 
     createSlave(wsClient, centralId, slave) {
@@ -383,10 +383,10 @@ export default class HubotHttpClient {
             }),
             headers: headers
         })
-        .then((res) => res.json())
-        .then((data) => {
-            return data
-        })
+            .then((res) => res.json())
+            .then((data) => {
+                return data
+            })
     }
 
     createScene(wsClient, centralId, scene) {
@@ -397,14 +397,15 @@ export default class HubotHttpClient {
             body: JSON.stringify({
                 name: scene.name,
                 color: scene.color,
-                json: scene.json
+                json: scene.json,
+                ambientId: scene.ambientId
             }),
             headers: headers
         })
-        .then((res) => res.json())
-        .then((data) => {
-            return data
-        })
+            .then((res) => res.json())
+            .then((data) => {
+                return data
+            })
     }
 
     deleteScene(wsClient, centralId, id) {
@@ -414,11 +415,11 @@ export default class HubotHttpClient {
             method: 'DELETE',
             headers: headers
         })
-        .then((res) => this.checkStatus(res))
-        .then((res) => res.json())
-        .then((status) => {
-            return status
-        })
+            .then((res) => this.checkStatus(res))
+            .then((res) => res.json())
+            .then((status) => {
+                return status
+            })
     }
 
     deleteAmbient(wsClient, centralId, id) {
@@ -428,11 +429,11 @@ export default class HubotHttpClient {
             method: 'DELETE',
             headers: headers
         })
-        .then((res) => this.checkStatus(res))
-        .then((res) => res.json())
-        .then((status) => {
-            return status
-        })
+            .then((res) => this.checkStatus(res))
+            .then((res) => res.json())
+            .then((status) => {
+                return status
+            })
     }
 
     updateScene(wsClient, centralId, scene) {
@@ -450,8 +451,8 @@ export default class HubotHttpClient {
             headers: headers,
             body: JSON.stringify(data)
         })
-        .then((res) => this.checkStatus(res))
-        .then((res) => res.json())
+            .then((res) => this.checkStatus(res))
+            .then((res) => res.json())
     }
 
     createDevice(wsClient, centralId, device) {
@@ -469,10 +470,10 @@ export default class HubotHttpClient {
             }),
             headers: headers
         })
-        .then((res) => res.json())
-        .then((data) => {
-            return data
-        })
+            .then((res) => res.json())
+            .then((data) => {
+                return data
+            })
     }
 
     updateDevice(wsClient, centralId, device) {
@@ -489,11 +490,11 @@ export default class HubotHttpClient {
                 output: device.output
             })
         })
-        .then((res) => this.checkStatus(res))
-        .then((res) => res.json())
-        .then((device) => {
-            return device
-        })
+            .then((res) => this.checkStatus(res))
+            .then((res) => res.json())
+            .then((device) => {
+                return device
+            })
     }
 
     deleteDevice(wsClient, centralId, id) {
@@ -503,11 +504,11 @@ export default class HubotHttpClient {
             method: 'DELETE',
             headers: headers
         })
-        .then((res) => this.checkStatus(res))
-        .then((res) => res.json())
-        .then((status) => {
-            return status
-        })
+            .then((res) => this.checkStatus(res))
+            .then((res) => res.json())
+            .then((status) => {
+                return status
+            })
     }
 
     createChannel(wsClient, centralId, channel) {
@@ -525,10 +526,10 @@ export default class HubotHttpClient {
             }),
             headers: headers
         })
-        .then((res) => res.json())
-        .then((data) => {
-            return data
-        })
+            .then((res) => res.json())
+            .then((data) => {
+                return data
+            })
     }
 
     getAmbients(wsClient, centralId) {
@@ -538,18 +539,18 @@ export default class HubotHttpClient {
             method: 'GET',
             headers: headers
         })
-        .then((res) => res.json())
-        .then((data) => {
-            return data.map((ambient) => {
-                return new HubotAmbient(
-                    wsClient,
-                    ambient.id,
-                    ambient.name,
-                    ambient.image,
-                    ambient.slaves
-                )
+            .then((res) => res.json())
+            .then((data) => {
+                return data.map((ambient) => {
+                    return new HubotAmbient(
+                        wsClient,
+                        ambient.id,
+                        ambient.name,
+                        ambient.image,
+                        ambient.slaves
+                    )
+                })
             })
-        })
     }
 
     getScenes(wsClient, centralId) {
@@ -561,20 +562,21 @@ export default class HubotHttpClient {
                 headers: headers,
                 timeout: HTTP_TIMEOUT
             })
-            .then((res) => this.checkStatus(res))
-            .then((res) => res.json())
-            .then((scenes) => {
-                resolve(scenes.map((scene) => {
-                    return new HubotScene(
-                       wsClient,
-                       scene.id,
-                       scene.json,
-                       scene.description,
-                       scene.name,
-                       scene.color
-                    )
-                }))
-            }).catch((err) => reject(err))
+                .then((res) => this.checkStatus(res))
+                .then((res) => res.json())
+                .then((scenes) => {
+                    resolve(scenes.map((scene) => {
+                        return new HubotScene(
+                            wsClient,
+                            scene.id,
+                            scene.json,
+                            scene.description,
+                            scene.name,
+                            scene.color,
+                            scene.ambientId
+                        )
+                    }))
+                }).catch((err) => reject(err))
 
             setTimeout(() => {
                 reject(new RequestTimeout())
@@ -591,26 +593,26 @@ export default class HubotHttpClient {
                 headers: headers,
                 timeout: HTTP_TIMEOUT
             })
-            .then((res) => this.checkStatus(res))
-            .then((res) => res.json())
-            .then((data) => {
-                resolve(data.map((slave) => {
-                    return new HubotSlave(
-                        wsClient,
-                        slave.id,
-                        slave.type,
-                        slave.name,
-                        slave.color,
-                        slave.code,
-                        slave.channels_list,
-                        slave.devices,
-                        slave.temperature,
-                        slave.battery,
-                        slave['is_triphase'],
-                        slave.status
-                    )
-                }))
-            }).catch((err) => resolve(err))
+                .then((res) => this.checkStatus(res))
+                .then((res) => res.json())
+                .then((data) => {
+                    resolve(data.map((slave) => {
+                        return new HubotSlave(
+                            wsClient,
+                            slave.id,
+                            slave.type,
+                            slave.name,
+                            slave.color,
+                            slave.code,
+                            slave.channels_list,
+                            slave.devices,
+                            slave.temperature,
+                            slave.battery,
+                            slave['is_triphase'],
+                            slave.status
+                        )
+                    }))
+                }).catch((err) => resolve(err))
 
             setTimeout(() => {
                 reject(new RequestTimeout())
@@ -625,17 +627,17 @@ export default class HubotHttpClient {
             method: 'GET',
             headers: headers
         })
-        .then((res) => this.checkStatus(res))
-        .then((res) => res.json())
-        .then((data) => {
-            let remote = _.first(data)
+            .then((res) => this.checkStatus(res))
+            .then((res) => res.json())
+            .then((data) => {
+                let remote = _.first(data)
 
-            return new HubotRemote(
-                remote.id,
-                remote.name,
-                remote.rfir_buttons
-            )
-        })
+                return new HubotRemote(
+                    remote.id,
+                    remote.name,
+                    remote.rfir_buttons
+                )
+            })
     }
 
     updateSlave(wsClient, centralId, slave) {
@@ -660,11 +662,11 @@ export default class HubotHttpClient {
             headers: headers,
             body: JSON.stringify(data)
         })
-        .then((res) => this.checkStatus(res))
-        .then((res) => res.json())
-        .then((slave) => {
-            return slave
-        })
+            .then((res) => this.checkStatus(res))
+            .then((res) => res.json())
+            .then((slave) => {
+                return slave
+            })
     }
 
     updateChannel(wsClient, centralId, channel) {
@@ -680,11 +682,11 @@ export default class HubotHttpClient {
                 channel: channel.channel
             })
         })
-        .then((res) => this.checkStatus(res))
-        .then((res) => res.json())
-        .then((channel) => {
-            return channel
-        })
+            .then((res) => this.checkStatus(res))
+            .then((res) => res.json())
+            .then((channel) => {
+                return channel
+            })
     }
 
     deleteChannel(wsClient, centralId, id) {
@@ -694,11 +696,11 @@ export default class HubotHttpClient {
             method: 'DELETE',
             headers: headers
         })
-        .then((res) => this.checkStatus(res))
-        .then((res) => res.json())
-        .then((status) => {
-            return status
-        })
+            .then((res) => this.checkStatus(res))
+            .then((res) => res.json())
+            .then((status) => {
+                return status
+            })
     }
 
     deleteSlave(wsClient, centralId, id) {
@@ -708,11 +710,11 @@ export default class HubotHttpClient {
             method: 'DELETE',
             headers: headers
         })
-        .then((res) => this.checkStatus(res))
-        .then((res) => res.json())
-        .then((status) => {
-            return status
-        })
+            .then((res) => this.checkStatus(res))
+            .then((res) => res.json())
+            .then((status) => {
+                return status
+            })
     }
 
     deleteButton(centralId, button) {
@@ -722,10 +724,10 @@ export default class HubotHttpClient {
             method: 'DELETE',
             headers: headers
         })
-        .then((res) => res.json())
-        .then((data) => {
-            return data
-        })
+            .then((res) => res.json())
+            .then((data) => {
+                return data
+            })
     }
 
     createButton(centralId, button) {
@@ -743,10 +745,10 @@ export default class HubotHttpClient {
             }),
             headers: headers
         })
-        .then((res) => res.json())
-        .then((data) => {
-            return data
-        })
+            .then((res) => res.json())
+            .then((data) => {
+                return data
+            })
     }
 
     // Energy
@@ -767,8 +769,8 @@ export default class HubotHttpClient {
             method: 'GET',
             headers: headers
         })
-        .then((res) => this.checkStatus(res))
-        .then((res) => res.json())
+            .then((res) => this.checkStatus(res))
+            .then((res) => res.json())
     }
 
     getDayEnergy(centralId, day, scope, id) {

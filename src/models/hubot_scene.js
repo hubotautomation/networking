@@ -2,12 +2,13 @@ import HubotSceneProtocol from '../protocols/hubot_protocol_scene'
 import MessageObserver from '../utils/message_observer'
 
 export default class HubotScene extends HubotSceneProtocol {
-    constructor(socket, id, json, description, name, color) {
+    constructor(socket, id, json, description, name, color, ambientId) {
         super()
 
         this.id = id
         this.json = json
         this.description = description
+        this.ambientId = ambientId
         this.name = name
         this.color = color
         this.colorRgb = this.convertColor(color)
