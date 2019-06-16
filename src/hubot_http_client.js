@@ -270,6 +270,26 @@ export default class HubotHttpClient {
         })
     }
 
+    getMetadata(centralId, action, page) {
+        let headers = this.getHeaders(centralId)
+
+        return new Promise((resolve, reject) => {
+            fetch(`${this.protocol}://${this.server}/metadata/${action}/${page}`, {
+                method: 'GET',
+                headers: headers,
+                timeout: HTTP_TIMEOUT
+            })
+                .then((res) => this.checkStatus(res))
+                .then((res) => res.json())
+                .then((data) => resolve(data))
+                .catch((err) => reject(err))
+
+            setTimeout(() => {
+                reject(new RequestTimeout())
+            }, HTTP_TIMEOUT)
+        })
+    }
+
     createSchedule(centralId, schedule) {
         let headers = this.getHeaders(centralId)
 
