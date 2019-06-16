@@ -181,9 +181,14 @@ export default class HubotHttpClient {
     }
 
     getCentralUsers(centralId) {
+        let headers = this.getHeaders(centralId)
+
         return fetch(`${this.protocol}://${this.authServer}/central/${centralId}/users`, {
-            method: 'GET'
+            method: 'GET',
+            headers: headers,
+            timeout: HTTP_TIMEOUT
         })
+        .then((res) => this.checkStatus(res))
         .then((res) => res.json())
         .then((data) => {
             return data
