@@ -100,12 +100,23 @@ export default class HubotWsClient {
     onConnection() {
         this.retries = 0
         clearTimeout(this.connTimeout)
+        clearInterval(this.pingInterval)
+
+        this.pingInterval = setInterval(() => this._ping(), 5000)
 
         if (this.listeners['connection_success']) {
             let observer = this.listeners['connection_success']
 
             observer.fire()
         }
+    }
+
+    _ping() {
+        if (this.dead) return
+
+        this.send({
+            'message_type': 'ping'
+        })
     }
 
     send(data) {
