@@ -5,7 +5,8 @@ import HubotIRRFDevice from './hubot_irrf'
 import _ from 'lodash'
 
 export default class HubotSlave extends HubotSlaveProtocol {
-    constructor(socket, id, type, name, color, code, channels, devices, temperature, battery, isTriphase, status) {
+    constructor(socket, id, type, name, color, code, channels,
+                devices, temperature, battery, isTriphase, status, averageRetries) {
         super()
 
         this.id = id
@@ -19,6 +20,7 @@ export default class HubotSlave extends HubotSlaveProtocol {
         this.battery = battery
         this['is_triphase'] = isTriphase
         this.lastConsumption = undefined
+        this.averageRetries = 0
 
         if (!channels) {
             this.channels = []
@@ -61,6 +63,7 @@ export default class HubotSlave extends HubotSlaveProtocol {
         this.socket.subscribe('status_update', (message) => {
             if (message.id === this.id) {
                 this.status = message.status
+                this.averageRetries = message['average_retries'] || this.averageRetries
             }
         })
     }
