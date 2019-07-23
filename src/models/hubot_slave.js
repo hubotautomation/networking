@@ -90,6 +90,12 @@ export default class HubotSlave extends HubotSlaveProtocol {
         this.socket.send(payload)
     }
 
+    check(type) {
+        let payload = this.defaultCheck(this.id, type)
+
+        this.socket.send(payload)
+    }
+
     rgbDimmer(r, g, b) {
         let payload = this.dimmerRgb(this.id, r, g, b)
 

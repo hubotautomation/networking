@@ -31,6 +31,16 @@ export default class HubotSlaveProtocol extends HubotProtocol {
         }
     }
 
+    defaultCheck(slaveId, type) {
+        let command = type ? `check_${type}` : 'check'
+
+        return {
+            'type': 'slave',
+            'command': command,
+            'id': slaveId
+        }
+    }
+
     calibrationCheck(slaveId) {
         return {
             'type': 'slave',
