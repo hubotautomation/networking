@@ -608,7 +608,8 @@ export default class HubotHttpClient {
                             slave.devices,
                             slave.temperature,
                             slave.battery,
-                            slave.status
+                            slave.status,
+                            slave['clamp_type']
                         )
                     }))
                 }).catch((err) => resolve(err))
