@@ -6,7 +6,7 @@ import _ from 'lodash'
 
 export default class HubotSlave extends HubotSlaveProtocol {
     constructor(socket, id, type, name, color, code, channels,
-                devices, temperature, battery, isTriphase, status, averageRetries) {
+                devices, temperature, battery, status, clampType, averageRetries) {
         super()
 
         this.id = id
@@ -18,8 +18,8 @@ export default class HubotSlave extends HubotSlaveProtocol {
         this.status = status
         this.temperature = temperature
         this.battery = battery
-        this['is_triphase'] = isTriphase
         this.lastConsumption = undefined
+        this['clamp_type'] = clampType
         this.averageRetries = 0
 
         if (!channels) {

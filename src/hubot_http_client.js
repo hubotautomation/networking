@@ -376,8 +376,7 @@ export default class HubotHttpClient {
                     name: slave.name,
                     color: slave.color,
                     code: slave.code,
-                    'operation_mode': slave.operationMode,
-                    'is_triphase': slave['is_triphase']
+                    'clamp_type': slave['clamp_type']
                 },
                 ambients: slave.ambients
             }),
@@ -609,7 +608,6 @@ export default class HubotHttpClient {
                             slave.devices,
                             slave.temperature,
                             slave.battery,
-                            slave['is_triphase'],
                             slave.status
                         )
                     }))
@@ -649,14 +647,10 @@ export default class HubotHttpClient {
                 'type': slave.type,
                 'name': slave.name,
                 'color': slave.color,
-                'operation_mode': slave.operationMode,
-                'is_triphase': slave['is_triphase']
+                'clamp_type': slave['clamp_type']
             },
             'ambients': slave.ambients
         }
-
-        console.log(data)
-        console.log(JSON.stringify(data))
 
         return fetch(`${this.protocol}://${this.server}/slaves/${slave.id}`, {
             method: 'PUT',

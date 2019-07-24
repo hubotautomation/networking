@@ -123,7 +123,6 @@ export default class HubotWsClient {
         let message = JSON.stringify(data)
 
         if (this.authenticated) {
-            console.log('Sending', data)
             this.socket.send(message)
         } else {
             throw new NotAuthenticatedFailure()
@@ -196,14 +195,12 @@ export default class HubotWsClient {
 
                 if (this.socket.on) {
                     // Node WS Client
-                    console.log('Nodejs WS Client')
                     this.socket.on('connection', this.onConnection.bind(this))
                     this.socket.on('message', this.onMessage.bind(this))
                     this.socket.on('close', this.onClose.bind(this))
                     this.socket.on('error', this.onError.bind(this))
                 } else {
                     // HTML5
-                    console.log('HTML5 WS Client')
                     this.socket.onopen = (message) => this.onConnection(message.data)
                     this.socket.onmessage = (message) => this.onMessage(message.data)
                     this.socket.onclose = (message) => this.onClose(message.data)
