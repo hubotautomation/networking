@@ -101,25 +101,6 @@ export default class HubotHttpClient {
         return Promise.resolve(res)
     }
 
-    getHeaders(centralId) {
-        let central
-
-        if (this.centrals.length) {
-            central = _.find(this.centrals, {'central_id': centralId})
-        } else {
-            central = this.centrals[centralId]
-        }
-
-        if (!central) {
-            throw new CentralNotFoundFailure()
-        }
-        return new Headers({
-            'x-access-token': central.token,
-            'central-id': centralId,
-            'Content-Type': 'application/json'
-        })
-    }
-
     updateAmbient(wsClient, centralId, id, slaves, name) {
         let headers = this.getHeaders(centralId)
         let payload = HubotAmbient.newAmbient(slaves, name)
@@ -181,7 +162,7 @@ export default class HubotHttpClient {
     }
 
     getCentralUsers(centralId) {
-        let headers = this.getHeaders(centralId)
+        let headers = this.getAuthHeaders()
 
         return fetch(`${this.protocol}://${this.authServer}/central/${centralId}/users`, {
             method: 'GET',
@@ -234,12 +215,11 @@ export default class HubotHttpClient {
     }
 
     getCentrals() {
+        let headers = this.getAuthHeaders()
+
         return fetch(`${this.protocol}://${this.server}/users/centrals`, {
             method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'x-access-token': this.token
-            }
+            headers: headers
         })
             .then((res) => res.json())
             .then((data) => {
@@ -822,5 +802,31 @@ export default class HubotHttpClient {
         }
 
         return this.getEnergyData(centralId, 'year', 'month', year, scope, id)
+    }
+
+    getAuthHeaders() {
+        return new Headers({
+            'Authorization': `Bearer ${this.token}`,
+            'Content-Type': 'application/json'
+        })
+    }
+
+    getHeaders(centralId) {
+        let central
+
+        if (this.centrals.length) {
+            central = _.find(this.centrals, {'central_id': centralId})
+        } else {
+            central = this.centrals[centralId]
+        }
+
+        if (!central) {
+            throw new CentralNotFoundFailure()
+        }
+        return new Headers({
+            'x-access-token': central.token,
+            'central-id': centralId,
+            'Content-Type': 'application/json'
+        })
     }
 }
