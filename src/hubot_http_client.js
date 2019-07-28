@@ -584,7 +584,7 @@ export default class HubotHttpClient {
         })
     }
 
-    getSlaves(wsClient, centralId) {
+    getSlaves(wsClient, centralId, mapDevices) {
         let headers = this.getHeaders(centralId)
 
         return new Promise((resolve, reject) => {
@@ -596,7 +596,11 @@ export default class HubotHttpClient {
                 .then((res) => this.checkStatus(res))
                 .then((res) => res.json())
                 .then((data) => {
-                    resolve(data.map((slave) => {
+                    if (!mapDevices) {
+                        return resolve(data)
+                    }
+
+                    return resolve(data.map((slave) => {
                         return new HubotSlave(
                             wsClient,
                             slave.id,
