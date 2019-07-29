@@ -584,6 +584,46 @@ export default class HubotHttpClient {
         })
     }
 
+    getSlave(wsClient, centralId, slaveId, mapDevice) {
+        let headers = this.getHeaders(centralId)
+
+        return new Promise((resolve, reject) => {
+            fetch(`${this.protocol}://${this.server}/slaves/${slaveId}`, {
+                method: 'GET',
+                headers: headers,
+                timeout: HTTP_TIMEOUT
+            })
+                .then((res) => this.checkStatus(res))
+                .then((res) => res.json())
+                .then((data) => {
+                    if (!mapDevice) {
+                        return resolve(data)
+                    }
+
+                    return resolve(data.map((slave) => {
+                        return new HubotSlave(
+                            wsClient,
+                            slave.id,
+                            slave.type,
+                            slave.name,
+                            slave.color,
+                            slave.code,
+                            slave.channels_list,
+                            slave.devices,
+                            slave.temperature,
+                            slave.battery,
+                            slave.status,
+                            slave['clamp_type']
+                        )
+                    }))
+                }).catch((err) => resolve(err))
+
+            setTimeout(() => {
+                reject(new RequestTimeout())
+            }, HTTP_TIMEOUT)
+        })
+    }
+
     getSlaves(wsClient, centralId, mapDevices) {
         let headers = this.getHeaders(centralId)
 
