@@ -596,7 +596,7 @@ export default class HubotHttpClient {
                 .then((res) => this.checkStatus(res))
                 .then((res) => res.json())
                 .then((data) => {
-                    if (!mapDevice) {
+                    if (mapDevice) {
                         return resolve(data)
                     }
 
@@ -636,7 +636,7 @@ export default class HubotHttpClient {
                 .then((res) => this.checkStatus(res))
                 .then((res) => res.json())
                 .then((data) => {
-                    if (!mapDevices) {
+                    if (mapDevices) {
                         return resolve(data)
                     }
 
