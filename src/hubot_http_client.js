@@ -595,27 +595,26 @@ export default class HubotHttpClient {
             })
                 .then((res) => this.checkStatus(res))
                 .then((res) => res.json())
-                .then((data) => {
+                .then((slave) => {
                     if (mapDevice) {
-                        return resolve(data)
+                        return resolve(slave)
                     }
 
-                    return resolve(data.map((slave) => {
-                        return new HubotSlave(
-                            wsClient,
-                            slave.id,
-                            slave.type,
-                            slave.name,
-                            slave.color,
-                            slave.code,
-                            slave.channels_list,
-                            slave.devices,
-                            slave.temperature,
-                            slave.battery,
-                            slave.status,
-                            slave['clamp_type']
-                        )
-                    }))
+                    return resolve(new HubotSlave(
+                        wsClient,
+                        slave.id,
+                        slave.type,
+                        slave.name,
+                        slave.color,
+                        slave.code,
+                        slave.channels_list,
+                        slave.devices,
+                        slave.temperature,
+                        slave.battery,
+                        slave.status,
+                        slave['clamp_type']
+                    ))
+
                 }).catch((err) => resolve(err))
 
             setTimeout(() => {
