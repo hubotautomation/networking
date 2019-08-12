@@ -61,7 +61,7 @@ export default class HubotChannel {
             case 'pulse_down': value = 0; break
         }
 
-        let payload = HubotChannelProtocol.lightControl(this.slave.id, this.channel, value)
+        let payload = HubotChannelProtocol.pulse(this.slave.id, this.channel, value)
 
         this.socket.send(payload)
     }
