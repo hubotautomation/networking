@@ -41,14 +41,14 @@ export default class HubotChannel {
                     this.value = channel.value
                 }
 
-                this.observer.fire()
+                this.observer.fire(message)
             }
         })
 
         this.socket.subscribe('timeout', (message) => {
             if (this.slave.id === message.id) {
                 // this.value = this.lastState
-                this.observer.fire()
+                this.observer.fire(message)
             }
         })
     }
