@@ -9,6 +9,25 @@ export default class HubotChannelProtocol extends HubotProtocol {
      * {
      *     'type': 'slave',
      *     'id': 5,
+     *     'command': 'pulse',
+     *     'channel': 2,
+     *     'value': 100
+     * }
+     */
+    static pulse(slaveId, channel, value) {
+        return {
+            'type': 'slave',
+            'id': slaveId,
+            'command': 'pulse',
+            'channel': channel,
+            'value': value
+        }
+    }
+
+    /* Ex:
+     * {
+     *     'type': 'slave',
+     *     'id': 5,
      *     'command': 'light_control',
      *     'channel': 2,
      *     'value': 100

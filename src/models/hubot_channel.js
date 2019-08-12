@@ -53,6 +53,19 @@ export default class HubotChannel {
         })
     }
 
+    pulse() {
+        let value = 0
+
+        switch(this.type) {
+            case 'pulse_up': value = 100; break
+            case 'pulse_down': value = 0; break
+        }
+
+        let payload = HubotChannelProtocol.lightControl(this.slave.id, this.channel, value)
+
+        this.socket.send(payload)
+    }
+
     lightSwitch(value) {
         // this.lastState = this.value
         let payload = HubotChannelProtocol.lightControl(this.slave.id, this.channel, value)
