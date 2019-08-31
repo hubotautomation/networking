@@ -376,6 +376,7 @@ export default class HubotHttpClient {
                     name: slave.name,
                     color: slave.color,
                     code: slave.code,
+                    aggregate: slave.aggregate,
                     'clamp_type': slave['clamp_type']
                 },
                 ambients: slave.ambients
@@ -612,7 +613,8 @@ export default class HubotHttpClient {
                         slave.temperature,
                         slave.battery,
                         slave.status,
-                        slave['clamp_type']
+                        slave['clamp_type'],
+                        slave.aggregate
                     ))
 
                 }).catch((err) => resolve(err))
@@ -652,7 +654,8 @@ export default class HubotHttpClient {
                             slave.temperature,
                             slave.battery,
                             slave.status,
-                            slave['clamp_type']
+                            slave['clamp_type'],
+                            slave.aggregate
                         )
                     }))
                 }).catch((err) => resolve(err))
@@ -691,7 +694,8 @@ export default class HubotHttpClient {
                 'type': slave.type,
                 'name': slave.name,
                 'color': slave.color,
-                'clamp_type': slave['clamp_type']
+                'clamp_type': slave['clamp_type'],
+                'aggregate': slave.aggregate
             },
             'ambients': slave.ambients
         }

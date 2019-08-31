@@ -6,7 +6,7 @@ import _ from 'lodash'
 
 export default class HubotSlave extends HubotSlaveProtocol {
     constructor(socket, id, type, name, color, code, channels,
-                devices, temperature, battery, status, clampType, averageRetries) {
+                devices, temperature, battery, status, clampType, aggregate, averageRetries) {
         super()
 
         this.id = id
@@ -14,6 +14,7 @@ export default class HubotSlave extends HubotSlaveProtocol {
         this.name = name
         this.color = color
         this.code = code
+        this.aggregate = aggregate
         this.socket = socket
         this.status = status
         this.temperature = temperature
