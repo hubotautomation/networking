@@ -44,6 +44,13 @@ export default class HubotHttpClient {
             .then((res) => res.json())
     }
 
+    static getLocalCentralData() {
+        return fetch('http://hubot.local:8080/local_token', {
+            method: 'GET'
+        })
+        .then((res) => res.json())
+    }
+
     /* Authenticates the user on the cloud backend.
     */
     auth() {
@@ -70,16 +77,6 @@ export default class HubotHttpClient {
 
                 return data
             })
-    }
-
-    static getLocalCentralData() {
-        return fetch('http://hubot.local:8080/local_token', {
-            method: 'GET'
-        })
-        .then((res) => res.json())
-        .then((data) => {
-            return data
-        })
     }
 
     changeServer(server) {
