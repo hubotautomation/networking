@@ -72,6 +72,16 @@ export default class HubotHttpClient {
             })
     }
 
+    getLocalCentralData() {
+        return fetch('http://hubot.local:8080/local_token', {
+            method: 'GET'
+        })
+        .then((res) => res.json())
+        .then((data) => {
+            return data
+        })
+    }
+
     changeServer(server) {
         this.server = server
         console.log('CHANGED SERVER TO ', this.server)
