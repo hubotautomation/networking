@@ -16,6 +16,8 @@ if (env === 'build') {
     outputFile = libraryName + '.js'
 }
 
+plugins.push(new webpack.IgnorePlugin(/\.\/locale$/))
+
 const config = {
     entry: [
         'whatwg-fetch',
