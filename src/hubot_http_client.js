@@ -45,7 +45,7 @@ export default class HubotHttpClient {
     }
 
     static getLocalCentralData() {
-        return fetch('http://hubot.local:8080/local_token', {
+        return fetch('http://hubot.local:8080/acl/local_token', {
             method: 'GET'
         })
         .then((res) => res.json())

@@ -1,12 +1,13 @@
 {
   "name": "hubot-networking",
-  "version": "1.9.2",
+  "version": "1.9.4",
   "description": "All networking needed by hubot clients.",
   "main": "lib/Hubot.min.js",
   "scripts": {
     "build": "webpack --env build",
     "dev": "webpack --progress --colors --watch --env dev",
     "test": "mocha --compilers js:babel-core/register --colors ./test/*.spec.js",
+    "publish": "npm run build && npm publish",
     "test:watch": "mocha --compilers js:babel-core/register --colors -w ./test/*.spec.js"
   },
   "devDependencies": {
