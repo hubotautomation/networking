@@ -26,7 +26,11 @@ export default class HubotAmbient extends HubotAmbientProtocol {
                 slave.temperature,
                 slave.battery,
                 slave['is_triphase'],
-                slave.status
+                slave.status,
+                slave.clampType,
+                slave.aggregate,
+                slave.averageRetries,
+                slave.lastConsumption
             )
         })
     }
@@ -42,6 +46,7 @@ export default class HubotAmbient extends HubotAmbientProtocol {
             if (relSlave) {
                 slave.channels = relSlave.channels
                 slave.status = relSlave.status
+                slave.lastConsumption = relSlave.lastConsumption
             }
 
             return slave
