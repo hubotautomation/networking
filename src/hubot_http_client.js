@@ -223,7 +223,7 @@ export default class HubotHttpClient {
             })
     }
 
-    changePassword(oldPassword, newPassword) {
+    changePassword(oldPassword, password) {
         let headers = this.getAuthHeaders()
 
         return fetch(`${this.protocol}://${this.server}/users/change_password`, {
