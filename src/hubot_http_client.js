@@ -45,8 +45,10 @@ export default class HubotHttpClient {
     }
 
     static getLocalCentralData() {
-        return fetch('http://hubot.local:8080/acl/local_token', {
-            method: 'GET'
+        if (!window) throw new Error('No window is defined, this method is only to be called from the browser')
+        return fetch(`http://${window.location.hostname}:8080/acl/local_token`, {
+            method: 'GET',
+            timeout: 1000
         })
         .then((res) => res.json())
     }
@@ -219,6 +221,19 @@ export default class HubotHttpClient {
             .then((data) => {
                 return data
             })
+    }
+
+    changePassword(oldPassword, newPassword) {
+        let headers = this.getAuthHeaders()
+
+        return fetch(`${this.protocol}://${this.server}/users/change_password`, {
+            method: 'POST',
+            headers: headers,
+            body: JSON.stringify({
+                oldPassword,
+                password
+            })
+        }).then((res) => res.json())
     }
 
     getCentrals() {
@@ -624,7 +639,7 @@ export default class HubotHttpClient {
                         slave.aggregate
                     ))
 
-                }).catch((err) => resolve(err))
+                }).catch((err) => reject(err))
 
             setTimeout(() => {
                 reject(new RequestTimeout())
@@ -662,10 +677,12 @@ export default class HubotHttpClient {
                             slave.battery,
                             slave.status,
                             slave['clamp_type'],
-                            slave.aggregate
+                            slave.aggregate,
+                            0,
+                            slave.lastConsumption
                         )
                     }))
-                }).catch((err) => resolve(err))
+                }).catch((err) => reject(err))
 
             setTimeout(() => {
                 reject(new RequestTimeout())
@@ -729,7 +746,8 @@ export default class HubotHttpClient {
                 id: channel.id,
                 name: channel.name,
                 type: channel.type,
-                channel: channel.channel
+                channel: channel.channel,
+                sceneId: channel.sceneId
             })
         })
             .then((res) => this.checkStatus(res))
