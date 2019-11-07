@@ -31,6 +31,14 @@ export default class HubotSlaveProtocol extends HubotProtocol {
         }
     }
 
+    _leaveCheckMode(slaveId) {
+        return {
+            'type': 'slave',
+            'command': 'leave_check_mode',
+            'id': slaveId
+        }
+    }
+
     defaultCheck(slaveId, type) {
         let command = type ? `check_${type}` : 'check'
 

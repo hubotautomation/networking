@@ -19,6 +19,8 @@ export default class HubotScene extends HubotSceneProtocol {
     }
 
     setupListeners() {
+        if (!this.socket) return
+
         this.socket.subscribe('scene_status', (message) => {
             if (message.status === 'finished') {
                 this.status = 'idle'

@@ -6,7 +6,8 @@ import _ from 'lodash'
 
 export default class HubotSlave extends HubotSlaveProtocol {
     constructor(socket, id, type, name, color, code, channels,
-                devices, temperature, battery, status, clampType, aggregate, averageRetries) {
+        devices, temperature, battery, status, clampType,
+        aggregate, averageRetries, lastConsumption) {
         super()
 
         this.id = id
@@ -19,7 +20,7 @@ export default class HubotSlave extends HubotSlaveProtocol {
         this.status = status
         this.temperature = temperature
         this.battery = battery
-        this.lastConsumption = undefined
+        this.lastConsumption = lastConsumption
         this['clamp_type'] = clampType
         this.averageRetries = 0
 
@@ -34,7 +35,7 @@ export default class HubotSlave extends HubotSlaveProtocol {
                     channel.channel,
                     channel.value,
                     channel.type,
-                    channel.scene_id
+                    channel.sceneId
                 )
             })
         }
@@ -61,6 +62,8 @@ export default class HubotSlave extends HubotSlaveProtocol {
     }
 
     setupListeners() {
+        if (!this.socket) return
+
         this.socket.subscribe('status_update', (message) => {
             if (message.id === this.id) {
                 this.status = message.status
@@ -93,6 +96,12 @@ export default class HubotSlave extends HubotSlaveProtocol {
 
     check(type) {
         let payload = this.defaultCheck(this.id, type)
+
+        this.socket.send(payload)
+    }
+
+    leaveCheckMode() {
+        let payload = this._leaveCheckMode(this.id)
 
         this.socket.send(payload)
     }
