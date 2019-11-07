@@ -42,6 +42,10 @@ export default class HubotWsClient {
     onMessage(data) {
         let message = JSON.parse(data)
 
+        if (message.message_type === 'pong') {
+            this.lastPing = new Date().getTime()
+        }
+
         if (message.message_type && this.listeners[message.message_type]) {
             let observer = this.listeners[message.message_type]
 
@@ -66,6 +70,7 @@ export default class HubotWsClient {
 
     onClose() {
         if (this.dead) return
+        clearInterval(this.pingInterval)
 
         console.log('Connection closed.')
 
@@ -76,11 +81,14 @@ export default class HubotWsClient {
         }
 
         if (this.retries <= MAX_RETRIES) {
-            setTimeout(() => {
-                this.connect()
-                    .then(() => {
-                        this.retries = 0
-                    })
+            console.log('Retries => ', this.retries)
+            setTimeout(async () => {
+                try {
+                    await this.connect()
+                    this.retries = 0
+                } catch(e) {
+                    console.log('Connection failed.')
+                }
             }, 1000)
         } else {
             console.log('Timeout, throwing.')
@@ -98,11 +106,11 @@ export default class HubotWsClient {
     }
 
     onConnection() {
-        this.retries = 0
         clearTimeout(this.connTimeout)
         clearInterval(this.pingInterval)
 
-        this.pingInterval = setInterval(() => this._ping(), 5000)
+        this.pingInterval = setInterval(() => this._ping(), 2500)
+        this.lastPing = new Date().getTime()
 
         if (this.listeners['connection_success']) {
             let observer = this.listeners['connection_success']
@@ -113,14 +121,21 @@ export default class HubotWsClient {
 
     _ping() {
         if (this.dead) return
+        if ((new Date().getTime() - this.lastPing) > (5 * 1000)) {
+            this.reconnect()
+            return
+        }
 
         this.send({
-            'message_type': 'ping'
+            'type': 'ping',
+            'command': ''
         })
     }
 
     send(data) {
         let message = JSON.stringify(data)
+
+        if (this.socket.readyState !== 1) return
 
         if (this.authenticated) {
             this.socket.send(message)
@@ -161,6 +176,7 @@ export default class HubotWsClient {
     }
 
     reconnect() {
+        clearInterval(this.pingInterval)
         console.log('Reconnecting.')
         this.retries = 0
         if (this.socket) {
@@ -176,7 +192,8 @@ export default class HubotWsClient {
 
             observer.fire()
         }
-        this.retries++
+
+        this.retries = this.retries + 1
 
         if (this.connTimeout) clearTimeout(this.connTimeout)
 
