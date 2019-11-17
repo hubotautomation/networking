@@ -61,6 +61,12 @@ export default class HubotSlave extends HubotSlaveProtocol {
         this.setupListeners()
     }
 
+    query() {
+        let payload = this.queryState(this.id)
+
+        this.socket.send(payload)
+    }
+
     setupListeners() {
         if (!this.socket) return
 
