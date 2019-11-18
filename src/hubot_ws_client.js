@@ -152,6 +152,7 @@ export default class HubotWsClient {
 
                 if (this.success) {
                     this.success(this)
+                    this.onConnection()
                 }
 
                 return resolve(this)
@@ -212,7 +213,7 @@ export default class HubotWsClient {
 
                 if (this.socket.on) {
                     // Node WS Client
-                    this.socket.on('connection', this.onConnection.bind(this))
+                    // this.socket.on('connection', this.onConnection.bind(this))
                     this.socket.on('message', this.onMessage.bind(this))
                     this.socket.on('close', this.onClose.bind(this))
                     this.socket.on('error', this.onError.bind(this))
