@@ -219,7 +219,7 @@ export default class HubotWsClient {
                     this.socket.on('error', this.onError.bind(this))
                 } else {
                     // HTML5
-                    this.socket.onopen = (message) => this.onConnection(message.data)
+                    // this.socket.onopen = (message) => this.onConnection(message.data)
                     this.socket.onmessage = (message) => this.onMessage(message.data)
                     this.socket.onclose = (message) => this.onClose(message.data)
                     this.socket.onerror = (message) => this.onError(message.data)
