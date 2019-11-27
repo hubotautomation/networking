@@ -1,13 +1,14 @@
 import HubotSlaveProtocol from '../protocols/hubot_protocol_slave'
 import HubotChannelProtocol from '../protocols/hubot_protocol_channel'
 import HubotChannel from './hubot_channel'
+import MessageObserver from '../utils/message_observer'
 import HubotIRRFDevice from './hubot_irrf'
 import _ from 'lodash'
 
 export default class HubotSlave extends HubotSlaveProtocol {
     constructor(socket, id, type, name, color, code, channels,
         devices, temperature, battery, status, clampType,
-        aggregate, averageRetries, lastConsumption) {
+        aggregate, temperatureCorrection, averageRetries, lastConsumption) {
         super()
 
         this.id = id
@@ -20,9 +21,11 @@ export default class HubotSlave extends HubotSlaveProtocol {
         this.status = status
         this.temperature = temperature
         this.battery = battery
+        this.temperatureCorrection = temperatureCorrection
         this.lastConsumption = lastConsumption
         this['clamp_type'] = clampType
         this.averageRetries = 0
+        this.observer = new MessageObserver()
 
         if (!channels) {
             this.channels = []
@@ -67,6 +70,14 @@ export default class HubotSlave extends HubotSlaveProtocol {
         this.socket.send(payload)
     }
 
+    subscribe(fn) {
+        this.observer.subscribe(fn)
+    }
+
+    unsubscribe(fn) {
+        this.observer.unsubscribe(fn)
+    }
+
     setupListeners() {
         if (!this.socket) return
 
@@ -74,6 +85,15 @@ export default class HubotSlave extends HubotSlaveProtocol {
             if (message.id === this.id) {
                 this.status = message.status
                 this.averageRetries = message['average_retries'] || this.averageRetries
+            }
+        })
+
+        this.socket.subscribe('infrared_update', (message) => {
+            if (message.id === this.slave.id) {
+                this.temperature = message.temperature
+                this.battery = message.battery
+
+                this.observer.fire(message)
             }
         })
     }

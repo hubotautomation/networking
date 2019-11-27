@@ -94,13 +94,6 @@ export default class HubotIRRFDevice extends HubotIRRFProtocol {
             this.observer.fire(message)
         })
 
-        this.socket.subscribe('infrared_update', (message) => {
-            if (message.id === this.slave.id) {
-                this.lastPing = moment()
-                this.observer.fire(message)
-            }
-        })
-
         this.socket.subscribe('transmit_success', (message) => {
             if (message.id === this.slave.id) {
                 this.lastPing = moment()

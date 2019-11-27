@@ -678,6 +678,7 @@ export default class HubotHttpClient {
                             slave.status,
                             slave['clamp_type'],
                             slave.aggregate,
+                            slave['temperature_correction'] || 0,
                             0,
                             slave.lastConsumption
                         )
@@ -719,7 +720,8 @@ export default class HubotHttpClient {
                 'name': slave.name,
                 'color': slave.color,
                 'clamp_type': slave['clamp_type'],
-                'aggregate': slave.aggregate
+                'aggregate': slave.aggregate,
+                'temperature_correction': slave['temperature_correction']
             },
             'ambients': slave.ambients
         }

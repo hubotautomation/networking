@@ -8,6 +8,8 @@ export default class MessageObserver {
     }
 
     subscribe(fn) {
+        if (this.handlers.find(f => f === fn)) return
+
         this.handlers.push(fn)
     }
 
