@@ -89,7 +89,7 @@ export default class HubotSlave extends HubotSlaveProtocol {
         })
 
         this.socket.subscribe('infrared_update', (message) => {
-            if (message.id === this.slave.id) {
+            if (message.id === this.id) {
                 this.temperature = message.temperature
                 this.battery = message.battery
 
