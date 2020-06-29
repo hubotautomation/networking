@@ -22,7 +22,9 @@ export default class HubotIRRFDevice extends HubotIRRFProtocol {
             return new HubotIRRFCommand(
                 this.slave,
                 command.id,
-                command.name
+                command.name,
+                command.page_high,
+                command.page_low
             )
         })
 

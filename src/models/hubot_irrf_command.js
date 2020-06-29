@@ -1,12 +1,14 @@
 import HubotIRRFProtocol from '../protocols/hubot_protocol_infrared'
 
 export default class HubotIRRFCommand extends HubotIRRFProtocol {
-    constructor(slave, id, name) {
+    constructor(slave, id, name, pageHigh, pageLow) {
         super()
 
         this.slave = slave
         this.id = id
         this.name = name
+        this.pageHigh = pageHigh
+        this.pageLow = pageLow
         this.socket = slave.socket
     }
 

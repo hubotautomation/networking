@@ -55,6 +55,16 @@ export default class HubotWsClient {
         this.heartbeat()
     }
 
+    unsubscribe(messageType, fn) {
+        let listener = this.listeners[messageType]
+
+        if (listener) {
+            listener.unsubscribe(fn)
+        } else {
+            console.log('LISTENER NOT FOUND.')
+        }
+    }
+
     subscribe(messageType, fn) {
         let listener = this.listeners[messageType]
 
