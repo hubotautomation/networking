@@ -399,6 +399,7 @@ export default class HubotHttpClient {
                     color: slave.color,
                     code: slave.code,
                     aggregate: slave.aggregate,
+                    version: '4.0.0',
                     'clamp_type': slave['clamp_type']
                 },
                 ambients: slave.ambients
